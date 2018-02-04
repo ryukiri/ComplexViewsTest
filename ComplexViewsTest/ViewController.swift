@@ -22,7 +22,17 @@ class ViewController: UIViewController {
     
     fileprivate var firstViewController : FirstViewController!
     fileprivate var secondViewController : SecondViewController!
+    fileprivate var selfView : ViewController!
+    @IBOutlet weak var mainLabel: UILabel!
     
+    fileprivate func selfBuilder() {
+        if selfView == nil {
+            selfView =
+                storyboard?
+                    .instantiateViewController(withIdentifier: "selfView")
+                as! ViewController
+        }
+    }
     fileprivate func firstBuilder() {
         if firstViewController == nil {
             firstViewController =
@@ -43,6 +53,7 @@ class ViewController: UIViewController {
     @IBAction func switchViews(_ sender: UIBarButtonItem) {
         secondBuilder()
         firstBuilder()
+        selfBuilder()
         
         UIView.beginAnimations("View Flip", context: nil)
         UIView.setAnimationDuration(0.4)
@@ -52,12 +63,14 @@ class ViewController: UIViewController {
             firstViewController?.view.superview != nil {
             UIView.setAnimationTransition(.flipFromRight, for: view, cache: true)
             secondViewController.view.frame = view.frame
-            switchViewController(firstViewController, to: secondViewController)
+            //switchViewController(firstViewController, to: secondViewController)
+            mainLabel.text = "Text Changed"
         }
         else {
             UIView.setAnimationTransition(.flipFromLeft, for: view, cache: true)
             firstViewController.view.frame = view.frame
-            switchViewController(secondViewController, to: firstViewController)
+            //switchViewController(secondViewController, to: firstViewController)
+            mainLabel.text = "Text Changed"
         }
         UIView.commitAnimations()
 
